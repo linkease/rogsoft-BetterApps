@@ -1,0 +1,9 @@
+{
+  "role": "asusgo",
+  "aliases": [
+    "asuswrt",
+    "koolshare-asuswrt"
+  ],
+  "version": "2026.07.02-1",
+  "description": "KaiPlus defaults for ASUSWRT/Koolshare router environments"
+}

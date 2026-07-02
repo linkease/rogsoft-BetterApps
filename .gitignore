@@ -1,0 +1,6 @@
+BetterApps/bin/BetterApps
+BetterApps.tar.gz
+*.tmp
+*.download
+__pycache__/
+*.pyc
