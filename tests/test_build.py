@@ -23,7 +23,7 @@ class BuildScriptTest(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
         self.root = Path(self.tmp.name)
-        self.module_dir = self.root / "BetterApps"
+        self.module_dir = self.root / "betterapps"
         (self.module_dir / "bin").mkdir(parents=True)
         (self.module_dir / "scripts").mkdir()
         (self.module_dir / "webs").mkdir()
@@ -40,7 +40,7 @@ class BuildScriptTest(unittest.TestCase):
         self.sha256 = hashlib.sha256(self.source_binary.read_bytes()).hexdigest()
         self.config_path = self.root / "config.json.js"
         self.config_path.write_text(json.dumps({
-            "module": "BetterApps",
+            "module": "betterapps",
             "version": "0.1.0",
             "home_url": "Module_BetterApps.asp",
             "title": "BetterApps",
@@ -59,7 +59,7 @@ class BuildScriptTest(unittest.TestCase):
         conf = build.build_module(self.root)
 
         binary = self.module_dir / "bin" / "BetterApps"
-        package = self.root / "BetterApps.tar.gz"
+        package = self.root / "betterapps.tar.gz"
         self.assertTrue(binary.exists())
         self.assertEqual(binary.read_bytes(), self.source_binary.read_bytes())
         self.assertTrue(os.access(binary, os.X_OK))
@@ -70,8 +70,8 @@ class BuildScriptTest(unittest.TestCase):
         self.assertEqual(saved["md5"], conf["md5"])
         with tarfile.open(package, "r:gz") as tf:
             names = tf.getnames()
-            self.assertIn("BetterApps/bin/BetterApps", names)
-            self.assertIn("BetterApps/kaiplus/defaults/profiles/asusgo/manifest.json", names)
+            self.assertIn("betterapps/bin/BetterApps", names)
+            self.assertIn("betterapps/kaiplus/defaults/profiles/asusgo/manifest.json", names)
 
     def test_build_downloads_binary_archive_and_extracts_executable(self):
         archive = self.root / "BetterApps-binary-linux-arm64-v0.1.3.tar.gz"

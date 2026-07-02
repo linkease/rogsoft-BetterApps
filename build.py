@@ -14,6 +14,8 @@ from pathlib import Path
 
 REQUIRED_FIELDS = ("module", "version", "home_url", "title", "description")
 BINARY_FIELDS = ("binary_name", "binary_url", "binary_sha256")
+EXPECTED_MODULE = "betterapps"
+EXPECTED_BINARY = "BetterApps"
 
 
 def file_md5(path):
@@ -57,10 +59,10 @@ def validate_config(root, conf):
     for field in REQUIRED_FIELDS + BINARY_FIELDS:
         if not str(conf.get(field, "")).strip():
             raise ValueError(f"{field} is required in config.json.js or build overrides")
-    if conf["module"] != "BetterApps":
-        raise ValueError("module must be BetterApps")
-    if conf["binary_name"] != "BetterApps":
-        raise ValueError("binary_name must be BetterApps")
+    if conf["module"] != EXPECTED_MODULE:
+        raise ValueError(f"module must be {EXPECTED_MODULE}")
+    if conf["binary_name"] != EXPECTED_BINARY:
+        raise ValueError(f"binary_name must be {EXPECTED_BINARY}")
     module_dir = Path(root) / conf["module"]
     if not module_dir.is_dir():
         raise FileNotFoundError(f"missing module directory: {module_dir}")
