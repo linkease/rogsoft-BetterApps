@@ -3,9 +3,9 @@
 ## Packaging Boundary
 
 - Module slug is lowercase `betterapps`.
-- Binary filename is `BetterApps`.
+- Binary filename is fixed as `BetterApps`.
 - Do not commit built binaries into this repository.
-- `config.json.js` should describe released binaries with `binary_url`, `binary_sha256`, and `binary_name`.
+- `config.json.js` should describe released binaries with `binary_url` and `binary_sha256`.
 - Local `build.py` is for local packaging and test use only.
 - The release server must not execute plugin-provided scripts such as `build.py`, `build.sh`, or `build_hnd.sh`.
 - The release server should run the trusted generic builder from `asusgo-build`.

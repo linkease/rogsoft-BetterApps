@@ -37,7 +37,7 @@
     </style>
     <script>
         var r_lan_ipaddr = "<% nvram_get(lan_ipaddr); %>";
-        var params_check = ["BetterApps_enable"];
+        var params_check = ["betterapps_enable"];
         var dbus = {};
 
         function init() {
@@ -49,7 +49,7 @@
         function get_dbus_data() {
             $.ajax({
                 type: "GET",
-                url: "/_api/BetterApps",
+                url: "/_api/betterapps",
                 dataType: "json",
                 async: false,
                 success: function (data) {
@@ -78,7 +78,7 @@
 
         function push_data(obj, arg) {
             var id = parseInt(Math.random() * 100000000);
-            var postData = { "id": id, "method": "BetterApps_config.sh", "params": [arg], "fields": obj };
+            var postData = { "id": id, "method": "betterapps_config.sh", "params": [arg], "fields": obj };
             $.ajax({
                 url: "/_api/",
                 cache: false,
@@ -94,9 +94,9 @@
         }
 
         function generate_link() {
-            var app = E("BetterApps_website");
+            var app = E("betterapps_website");
             app.href = "/apps/";
-            app.style.display = dbus["BetterApps_enable"] == "1" ? "" : "none";
+            app.style.display = dbus["betterapps_enable"] == "1" ? "" : "none";
         }
 
         function get_status() {
@@ -119,7 +119,7 @@
 
         function menu_hook(title, tab) {
             tabtitle[tabtitle.length - 1] = new Array("", "BetterApps");
-            tablink[tablink.length - 1] = new Array("", "Module_BetterApps.asp");
+            tablink[tablink.length - 1] = new Array("", "Module_betterapps.asp");
         }
     </script>
 </head>
@@ -127,9 +127,9 @@
     <div id="TopBanner"></div>
     <div id="Loading" class="popup_bg"></div>
     <iframe name="hidden_frame" id="hidden_frame" style="display:none;"></iframe>
-    <form method="post" name="form" action="applydb.cgi?p=BetterApps" target="hidden_frame">
-        <input type="hidden" name="current_page" value="Module_BetterApps.asp" />
-        <input type="hidden" name="next_page" value="Module_BetterApps.asp" />
+    <form method="post" name="form" action="applydb.cgi?p=betterapps" target="hidden_frame">
+        <input type="hidden" name="current_page" value="Module_betterapps.asp" />
+        <input type="hidden" name="next_page" value="Module_betterapps.asp" />
         <input type="hidden" name="group_id" value="" />
         <input type="hidden" name="modified" value="0" />
         <input type="hidden" name="action_mode" value="" />
@@ -165,15 +165,15 @@
                                             <th>启用 BetterApps</th>
                                             <td>
                                                 <div class="switch_field">
-                                                    <label for="BetterApps_enable">
-                                                        <input id="BetterApps_enable" class="switch" type="checkbox" style="display:none;">
+                                                    <label for="betterapps_enable">
+                                                        <input id="betterapps_enable" class="switch" type="checkbox" style="display:none;">
                                                         <div class="switch_container"><div class="switch_bar"></div><div class="switch_circle transition_style"><div></div></div></div>
                                                     </label>
                                                 </div>
                                             </td>
                                         </tr>
                                         <tr><th>运行状态</th><td><span id="status">检查中...</span></td></tr>
-                                        <tr><th>访问入口</th><td><a id="BetterApps_website" class="betterapps_btn" target="_blank">打开 BetterApps</a></td></tr>
+                                        <tr><th>访问入口</th><td><a id="betterapps_website" class="betterapps_btn" target="_blank">打开 BetterApps</a></td></tr>
                                     </table>
                                     <div class="apply_gen"><input class="button_gen" onclick="save();" type="button" value="保存" /></div>
                                 </td></tr>

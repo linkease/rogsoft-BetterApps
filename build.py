@@ -12,8 +12,8 @@ import urllib.request
 from pathlib import Path
 
 
-REQUIRED_FIELDS = ("module", "version", "home_url", "title", "description")
-BINARY_FIELDS = ("binary_name", "binary_url", "binary_sha256")
+BINARY_FIELDS = ("binary_url", "binary_sha256")
+REQUIRED_FIELDS = ("module", "version", "home_url", "title", "description") + BINARY_FIELDS
 EXPECTED_MODULE = "betterapps"
 EXPECTED_BINARY = "BetterApps"
 
@@ -56,13 +56,11 @@ def apply_overrides(conf, binary_url=None, binary_sha256=None):
 
 
 def validate_config(root, conf):
-    for field in REQUIRED_FIELDS + BINARY_FIELDS:
+    for field in REQUIRED_FIELDS:
         if not str(conf.get(field, "")).strip():
             raise ValueError(f"{field} is required in config.json.js or build overrides")
     if conf["module"] != EXPECTED_MODULE:
         raise ValueError(f"module must be {EXPECTED_MODULE}")
-    if conf["binary_name"] != EXPECTED_BINARY:
-        raise ValueError(f"binary_name must be {EXPECTED_BINARY}")
     module_dir = Path(root) / conf["module"]
     if not module_dir.is_dir():
         raise FileNotFoundError(f"missing module directory: {module_dir}")
@@ -87,16 +85,16 @@ def download_binary(url, dest):
     return tmp_path
 
 
-def extract_binary_from_archive(archive_path, binary_name, dest_dir):
+def extract_binary_from_archive(archive_path, dest_dir):
     archive_path = Path(archive_path)
     dest_dir = Path(dest_dir)
     candidates = {
-        binary_name,
-        f"./{binary_name}",
-        f"bin/{binary_name}",
-        f"./bin/{binary_name}",
-        f"BetterApps/bin/{binary_name}",
-        f"./BetterApps/bin/{binary_name}",
+        EXPECTED_BINARY,
+        f"./{EXPECTED_BINARY}",
+        f"bin/{EXPECTED_BINARY}",
+        f"./bin/{EXPECTED_BINARY}",
+        f"BetterApps/bin/{EXPECTED_BINARY}",
+        f"./BetterApps/bin/{EXPECTED_BINARY}",
     }
     with tarfile.open(archive_path, "r:*") as tf:
         member = None
@@ -106,7 +104,7 @@ def extract_binary_from_archive(archive_path, binary_name, dest_dir):
                 member = item
                 break
         if member is None:
-            raise ValueError(f"archive does not contain {binary_name}")
+            raise ValueError(f"archive does not contain {EXPECTED_BINARY}")
         if not member.isfile():
             raise ValueError(f"archive member is not a file: {member.name}")
         source = tf.extractfile(member)
@@ -124,11 +122,11 @@ def extract_binary_from_archive(archive_path, binary_name, dest_dir):
     return tmp_path
 
 
-def prepare_downloaded_binary(downloaded_path, binary_name, dest_dir):
+def prepare_downloaded_binary(downloaded_path, dest_dir):
     downloaded_path = Path(downloaded_path)
     if not tarfile.is_tarfile(downloaded_path):
         return downloaded_path
-    extracted_path = extract_binary_from_archive(downloaded_path, binary_name, dest_dir)
+    extracted_path = extract_binary_from_archive(downloaded_path, dest_dir)
     downloaded_path.unlink(missing_ok=True)
     return extracted_path
 
@@ -154,13 +152,13 @@ def build_module(root=None, binary_url=None, binary_sha256=None):
     validate_config(root, conf)
 
     module = conf["module"]
-    binary_path = root / module / "bin" / conf["binary_name"]
+    binary_path = root / module / "bin" / EXPECTED_BINARY
     tmp_binary_path = download_binary(conf["binary_url"], binary_path)
     try:
         actual_sha256 = file_sha256(tmp_binary_path)
         if actual_sha256.lower() != conf["binary_sha256"].lower():
             raise ValueError(f"sha256 mismatch for {binary_path}: expected {conf['binary_sha256']}, got {actual_sha256}")
-        tmp_binary_path = prepare_downloaded_binary(tmp_binary_path, conf["binary_name"], binary_path.parent)
+        tmp_binary_path = prepare_downloaded_binary(tmp_binary_path, binary_path.parent)
         tmp_binary_path.replace(binary_path)
     except Exception:
         tmp_binary_path.unlink(missing_ok=True)
