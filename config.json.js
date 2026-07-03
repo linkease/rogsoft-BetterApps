@@ -6,5 +6,5 @@
     "md5": "4c16d45f6f9c04738da41c09ab65a5ba",
     "module": "betterapps",
     "title": "BetterApps",
-    "version": "0.1.1"
+    "version": "0.1.2"
 }

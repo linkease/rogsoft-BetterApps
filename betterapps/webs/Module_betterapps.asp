@@ -100,6 +100,10 @@
         }
 
         function get_status() {
+            if (dbus["betterapps_enable"] != "1") {
+                E("status").innerHTML = "插件未开启";
+                return;
+            }
             $.ajax({
                 type: "GET",
                 cache: false,
@@ -111,7 +115,7 @@
                     setTimeout("get_status();", 10000);
                 },
                 error: function () {
-                    E("status").innerHTML = "【警告】：运行中，但是无法工作，请更新最新固件。";
+                    E("status").innerHTML = "【警告】：服务未就绪或进程未运行。";
                     setTimeout("get_status();", 5000);
                 }
             });
