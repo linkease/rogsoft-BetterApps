@@ -4,7 +4,7 @@
     {
       "id": "asusgo-system-overview",
       "title": "系统概览",
-      "prompt": "帮我检查当前 ASUSWRT/Koolshare 系统状态，包括固件信息、CPU/内存、JFFS/USB/临时目录空间、Koolshare 目录、dbus 状态、关键脚本和最近错误日志。请先收集只读证据。"
+      "prompt": "帮我检查当前 ASUSWRT/Koolshare 系统状态，包括固件信息、CPU/内存、JFFS/USB/临时目录空间、Koolshare 目录、dbus 状态、关键脚本、监听端口和最近错误日志。请先收集只读证据，优先使用 asuswrt-system-diagnostics 或 asuswrt-logs-and-diagnostics。"
     },
     {
       "id": "asusgo-software-center-search",
@@ -29,7 +29,12 @@
     {
       "id": "asusgo-betterapps-kaiplus-self-check",
       "title": "BetterApps/KaiPlus 自检",
-      "prompt": "帮我检查 BetterApps/KaiPlus 在 ASUSWRT/Koolshare 上是否正常，包括服务进程、监听端口、安装目录、配置目录、skills、system prompt、启动脚本和最近日志；请先只读收集证据。"
+      "prompt": "帮我检查 BetterApps/KaiPlus 在 ASUSWRT/Koolshare 上是否正常，包括 BetterApps 进程、19290 端口、KAIPLUS_HOME、KaiPlus 子进程、/apps/kaiplus/ 页面、workspace、config/state/cache、skills、system prompt、启动脚本和最近日志；请先只读收集证据，优先使用 asuswrt-betterapps-kaiplus-diagnostics。"
+    },
+    {
+      "id": "asusgo-network",
+      "title": "网络诊断",
+      "prompt": "帮我诊断当前 ASUSWRT/Koolshare 路由器网络，包括 WAN/LAN、DNS、iptables、防火墙规则、端口监听和可能影响 BetterApps/KaiPlus 或插件访问的问题。请先收集只读证据。"
     }
   ]
 }
